@@ -1,11 +1,16 @@
 import React from 'react';
-import { Jumbotron } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { Bert } from 'meteor/themeteorchef:bert';
+import { insertDocument } from '../../api/documents/methods.js';
+
+const callMethod = (index) => {
+  insertDocument.call({ title: `Document #${index + 1}` }, (error) => {
+    if (error) Bert.alert(error.reason, 'danger');
+  });
+};
+
+const swarm = () => { for (let i = 0; i < 25; i++) { callMethod(i); } };
 
 export const Index = () => (
-  <Jumbotron className="text-center">
-    <h2>Base</h2>
-    <p>A starting point for Meteor applications.</p>
-    <p><a className="btn btn-success" href="https://themeteorchef.com/base" role="button">Read the Documentation</a></p>
-    <p style={ { fontSize: '16px', color: '#aaa' } }>Currently at v4.6.0</p>
-  </Jumbotron>
+  <Button onClick={ swarm } bsStyle="success">Call insertDocument Method</Button>
 );
